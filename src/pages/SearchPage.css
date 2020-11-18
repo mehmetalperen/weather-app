@@ -1,0 +1,31 @@
+.SearchPage {
+  border-style: solid;
+  min-height: 100vh;
+}
+
+.search-btn-container {
+  position: absolute;
+  top: 30px;
+  right: 30%;
+  left: 30%;
+}
+
+.search-result {
+  display: flex;
+  border-style: dashed;
+  margin: 50px 10% 0;
+  justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(137, 137, 141);
+  margin: 50px 10% 0;
+  padding: 15px;
+}

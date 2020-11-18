@@ -1,0 +1,19 @@
+.Navbar {
+  background-color: #00bcd4;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  word-wrap: none;
+  align-items: center;
+  border-radius: 0 0 30px 30px;
+  box-sizing: border-box;
+}
+
+.app-title {
+  padding-left: 20%;
+}
+
+.fav-place {
+  width: fit-content;
+  padding-right: 40%;
+}

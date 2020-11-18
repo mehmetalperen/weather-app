@@ -10,17 +10,33 @@ function SearchPage() {
   const [isAdding, setIsAdding] = useState(false);
   //Handle is adding
 
-  //Handle user input
-  const [userInput, setUserInput] = useState("");
-  const handleTyping = (event) => {
-    setUserInput(event.target.value);
-    console.log(userInput);
+  //Handle Search Results
+  const [searchResults, setSearchResults] = useState({
+    id: "",
+    name: "",
+    country: "",
+  });
+
+  const resetSearchResult = () => {
+    setSearchResults({ id: "", name: "", country: "" });
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [userInput]);
   //Handle user input
+  const [userInput, setUserInput] = useState("");
+
+  const handleTyping = (event) => {
+    setUserInput(event.target.value);
+  };
+  //Handle user input
+
+  useEffect(() => {
+    if (userInput !== "") {
+      fetchData();
+    }
+    if (userInput === "") {
+      resetSearchResult();
+    }
+  }, [userInput]);
 
   //Handle fetch data from the API
   //api.openweathermap.org/data/2.5/weather?q=${city name, state code}&appid=c44bebe63065c02792900a2e3f561b37
@@ -30,10 +46,47 @@ function SearchPage() {
     );
     const itemsData = await data.json();
     console.log(itemsData);
-    console.log("tyring to fetch" + userInput);
+    if (itemsData.cod !== "404") {
+      setSearchResults({
+        id: itemsData.id,
+        name: itemsData.name,
+        country: itemsData.sys.country,
+      });
+    }
   }
-
   //Handle fetch data from the API
+
+  //Handle Local storage saved places
+  const [savedPlaces, setSavedPlaces] = useState([]);
+
+  useEffect(() => {
+    const savedPlacedString = localStorage.getItem("savedPlaces");
+    if (savedPlacedString) {
+      const savedPlacesIDs = JSON.parse(savedPlacedString);
+      setSavedPlaces(savedPlacesIDs);
+    } else {
+      localStorage.setItem("savedPlaces", "[]");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedPlaces", JSON.stringify(savedPlaces));
+  }, [savedPlaces]);
+
+  const HandleSavePlace = (id) => {
+    setSavedPlaces((previousPlaces) => {
+      return [...previousPlaces, id];
+    });
+    console.log("saved place");
+    console.log(savedPlaces);
+  };
+
+  const HandleUnsavePlace = (id) => {
+    setSavedPlaces((savedPlaces) => {
+      return savedPlaces.filter((savedPlaceID) => savedPlaceID !== id);
+    });
+  };
+  //Handle Local storage saved places
 
   return (
     <div className="SearchPage">
@@ -63,22 +116,41 @@ function SearchPage() {
                 variant="outline-info"
                 onClick={() => {
                   setUserInput("");
+                  resetSearchResult();
                 }}
               >
                 Clear
+              </Button>
+              <Button
+                variant="outline-dark"
+                onClick={() => {
+                  alert(
+                    'after typing name of the city, put comma (,) and then type country code \n For example: \n "US" for United States'
+                  );
+                }}
+              >
+                Can't find it?
               </Button>
             </InputGroup.Prepend>
           </InputGroup>
         </div>
       ) : null}
 
+      {/* //itemsData.sys.country
+    //itemsData.id
+    //itemsData.name */}
       <div className="search-result">
-        <PreviewCard />
-        <PreviewCard />
-        <PreviewCard />
-        <PreviewCard />
-        <PreviewCard />
-        <PreviewCard />
+        {searchResults.id !== "" ? (
+          <PreviewCard
+            key={searchResults.id}
+            id={searchResults.id}
+            name={searchResults.name}
+            country={searchResults.country}
+            isSaved={savedPlaces.includes(searchResults.id)}
+            onSave={HandleSavePlace}
+            onUnsave={HandleUnsavePlace}
+          />
+        ) : null}
       </div>
     </div>
   );

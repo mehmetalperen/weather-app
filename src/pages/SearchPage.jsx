@@ -45,7 +45,6 @@ function SearchPage() {
       `http://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const itemsData = await data.json();
-    console.log(itemsData);
     if (itemsData.cod !== "404") {
       setSearchResults({
         id: itemsData.id,
@@ -77,8 +76,6 @@ function SearchPage() {
     setSavedPlaces((previousPlaces) => {
       return [...previousPlaces, id];
     });
-    console.log("saved place");
-    console.log(savedPlaces);
   };
 
   const HandleUnsavePlace = (id) => {

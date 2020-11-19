@@ -1,0 +1,56 @@
+.DetailViewCard {
+  background-color: #80deea;
+  border-radius: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(137, 137, 141);
+  margin: 70px 10% 70px;
+  box-sizing: border-box;
+  align-items: center;
+  min-height: fit-content;
+  width: fit-content;
+  padding: 20px;
+}
+
+.city-name {
+  display: flex;
+  text-align: left;
+  border-style: solid;
+  border-color: rgb(137, 137, 141);
+  border-width: 0 0 1px 0;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.weather-detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: left;
+  min-width: 500px;
+}
+
+.deatil-data-container {
+  display: block;
+  width: 50%;
+}
+
+.weather-visual-detail-container {
+  display: block;
+  width: 50%;
+  text-align: center;
+}
+
+.temp-value i {
+  padding: 0 5px;
+  border: solid;
+  border-width: 1px;
+  border-radius: 25%;
+  margin: 0 5px;
+  width: 50px;
+}
+
+.temp-value i:hover {
+  cursor: pointer;
+}

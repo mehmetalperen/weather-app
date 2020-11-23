@@ -14,14 +14,16 @@ function WeatherDetailPage({ match }) {
   });
 
   const [currentDayData, setCurrentDayData] = useState({
+    //current day's data
     feelsLike: "",
     humidity: "",
     weather: [],
     temp: "",
   });
-  const [showCurrentDayData, setShowCurrentDayData] = useState(false);
+  const [showCurrentDayData, setShowCurrentDayData] = useState(false); //show current day's data
 
-  const [weekDataDetail, setWeekDataDetail] = useState([]);
+  const [weekDataDetail, setWeekDataDetail] = useState([]); //week's data
+  const [showWeekDataDetail, setShowWeekDataDetail] = useState(false); //show week's data
 
   useEffect(() => {
     fetchItem();
@@ -33,6 +35,7 @@ function WeatherDetailPage({ match }) {
     );
     const item = await data.json();
     setItemBacisDetail({
+      //getting variables that we need for getting detailed data
       lat: item.coord.lat,
       lon: item.coord.lon,
       dt: item.dt,
@@ -43,6 +46,7 @@ function WeatherDetailPage({ match }) {
 
   useEffect(() => {
     if (itemBacisDetail.dt !== "") {
+      //if there is no ERROR
       getWeeklyData();
     }
   }, [itemBacisDetail]);
@@ -57,22 +61,25 @@ function WeatherDetailPage({ match }) {
     const itemWeek = await weekData.json();
 
     setCurrentDayData({
+      //day's data obj
       feelsLike: itemWeek.current.feels_like,
       humidity: itemWeek.current.humidity,
       weather: itemWeek.current.weather,
       temp: itemWeek.current.temp,
       day: new Date().getDay(),
     });
-    setWeekDataDetail(itemWeek.hourly);
-    setShowCurrentDayData(true);
+    setWeekDataDetail(itemWeek.hourly); //week's data array
+    setShowCurrentDayData(true); //show current data of the current day
+    setShowWeekDataDetail(true); //show current data of the week
   }
 
   return (
     <div className="WeatherDetailPage">
       {showCurrentDayData ? (
         <DetailViewCard
-          key={-1}
-          id={-1}
+          key={0}
+          id={0}
+          isMainCard={true}
           city={itemBacisDetail.name}
           country={itemBacisDetail.country}
           temp={currentDayData.temp}
@@ -83,6 +90,26 @@ function WeatherDetailPage({ match }) {
           day={currentDayData.day}
         />
       ) : null}
+
+      {showWeekDataDetail
+        ? weekDataDetail.map((dayDetail, index) => {
+            return (
+              <DetailViewCard
+                key={index + 1}
+                id={index + 1}
+                isMainCard={false}
+                city={"no city name"} //display city and country names in only main card
+                country={"no contry name"}
+                temp={dayDetail.temp}
+                feelTemp={dayDetail.feels_like}
+                humidity={dayDetail.humidity}
+                img={dayDetail.weather[0].icon}
+                description={dayDetail.weather[0].description}
+                day={currentDayData.day + index + 1}
+              />
+            );
+          })
+        : null}
     </div>
   );
 }

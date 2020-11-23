@@ -5,6 +5,7 @@ import "./SearchPage.css";
 import PreviewCard from "../components/PreviewCard";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+
 function SearchPage() {
   //Handle is adding
   const [isAdding, setIsAdding] = useState(false);
@@ -73,6 +74,7 @@ function SearchPage() {
   }, [savedPlaces]);
 
   const HandleSavePlace = (id) => {
+    console.log(localStorage.getItem("savedPlaces"));
     setSavedPlaces((previousPlaces) => {
       return [...previousPlaces, id];
     });
@@ -92,14 +94,14 @@ function SearchPage() {
           variant="outline-dark"
           size="lg"
           onClick={() => {
-            setIsAdding(!isAdding);
+            setIsAdding(!isAdding); //search bar will be toggled when clicked
           }}
         >
           Find Places
         </Button>
       </div>
 
-      {isAdding ? (
+      {isAdding ? ( //if true then search bar will pop up
         <div className="search-container">
           <InputGroup className="mb-3">
             <FormControl
@@ -122,7 +124,7 @@ function SearchPage() {
                 variant="outline-dark"
                 onClick={() => {
                   alert(
-                    'after typing name of the city, put comma (,) and then type country code \n For example: \n "US" for United States'
+                    'after typing name of the city, put comma (,) and then type country code \n For example: \n country code for United States is "US"'
                   );
                 }}
               >

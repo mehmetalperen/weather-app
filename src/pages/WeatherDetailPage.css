@@ -2,8 +2,7 @@
   width: 100%;
   padding: 0 10%;
   min-height: fit-content;
-  border-style: dashed;
-  justify-content: space-between;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }

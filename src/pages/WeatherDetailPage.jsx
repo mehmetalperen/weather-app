@@ -1,113 +1,98 @@
 import React, { useEffect, useState } from "react";
 import "./WeatherDetailPage.css";
 import DetailViewCard from "../components/DetailViewCard";
-function WeatherDetailPage({ match }) {
-  //First fetch
-  //http://api.openweathermap.org/data/2.5/weather?id=${match.params.id}&appid=c44bebe63065c02792900a2e3f561b37
-  //then get lat, lon, and dt values
-  const [itemBacisDetail, setItemBacisDetail] = useState({
-    lat: "",
-    lon: "",
-    dt: "",
-    name: "",
-    country: "",
-  });
 
+function WeatherDetailPage({ match }) {
+  const [showCurrentDayData, setShowCurrentDayData] = useState(false);
   const [currentDayData, setCurrentDayData] = useState({
-    //current day's data
-    feelsLike: "",
+    city: "",
+    country: "",
+    temp: "",
+    feelTemp: "",
     humidity: "",
     weather: [],
-    temp: "",
+    day: "",
   });
-  const [showCurrentDayData, setShowCurrentDayData] = useState(false); //show current day's data
 
-  const [weekDataDetail, setWeekDataDetail] = useState([]); //week's data
-  const [showWeekDataDetail, setShowWeekDataDetail] = useState(false); //show week's data
-
+  const [showWeekData, setShowWeekData] = useState(false);
+  const [weekData, setWeekData] = useState([]);
   useEffect(() => {
-    fetchItem();
+    fetchCurrentDayData();
+    fetchWeekData();
   }, []);
 
-  async function fetchItem() {
-    const data = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?id=${match.params.id}&appid=c44bebe63065c02792900a2e3f561b37`
+  async function fetchCurrentDayData() {
+    const dayData = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
     );
-    const item = await data.json();
-    setItemBacisDetail({
-      //getting variables that we need for getting detailed data
-      lat: item.coord.lat,
-      lon: item.coord.lon,
-      dt: item.dt,
-      name: item.name,
-      country: item.sys.country,
-    });
-  }
-
-  useEffect(() => {
-    if (itemBacisDetail.dt !== "") {
-      //if there is no ERROR
-      getWeeklyData();
-    }
-  }, [itemBacisDetail]);
-
-  //link to fetch in order to get 5 days weather report
-  //https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=51.51&lon=-0.13&dt=1605735196&appid=c44bebe63065c02792900a2e3f561b37
-
-  async function getWeeklyData() {
-    const weekData = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${itemBacisDetail.lat}&lon=${itemBacisDetail.lon}&dt=${itemBacisDetail.dt}&appid=c44bebe63065c02792900a2e3f561b37&units=imperial`
-    );
-    const itemWeek = await weekData.json();
-
+    const dayItem = await dayData.json();
     setCurrentDayData({
-      //day's data obj
-      feelsLike: itemWeek.current.feels_like,
-      humidity: itemWeek.current.humidity,
-      weather: itemWeek.current.weather,
-      temp: itemWeek.current.temp,
+      city: dayItem.name,
+      country: dayItem.sys.country,
+      temp: dayItem.main.temp,
+      feelTemp: dayItem.main.feels_like,
+      humidity: dayItem.main.humidity,
+      weather: dayItem.weather,
       day: new Date().getDay(),
     });
-    setWeekDataDetail(itemWeek.hourly); //week's data array
-    setShowCurrentDayData(true); //show current data of the current day
-    setShowWeekDataDetail(true); //show current data of the week
+
+    setShowCurrentDayData(true);
   }
 
+  async function fetchWeekData() {
+    const weekData = await fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
+    );
+    const weekItem = await weekData.json();
+    setWeekData(weekItem.list);
+    setShowWeekData(true);
+  }
   return (
     <div className="WeatherDetailPage">
-      {showCurrentDayData ? (
-        <DetailViewCard
-          key={0}
-          id={0}
-          isMainCard={true}
-          city={itemBacisDetail.name}
-          country={itemBacisDetail.country}
-          temp={currentDayData.temp}
-          feelTemp={currentDayData.feelsLike}
-          humidity={currentDayData.humidity}
-          img={currentDayData.weather[0].icon}
-          description={currentDayData.weather[0].description}
-          day={currentDayData.day}
-        />
-      ) : null}
+      <div
+        style={{
+          width: "100%",
+          margin: "20px auto 10px",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        {showCurrentDayData ? (
+          <DetailViewCard
+            id={0}
+            key={0}
+            isMainCard={true}
+            temp={currentDayData.temp}
+            feelTemp={currentDayData.feelTemp}
+            city={currentDayData.city}
+            country={currentDayData.country}
+            day={currentDayData.day}
+            humidity={currentDayData.humidity}
+            img={currentDayData.weather[0].icon}
+            description={currentDayData.weather[0].description.toUpperCase()}
+          />
+        ) : null}
+      </div>
 
-      {showWeekDataDetail
-        ? weekDataDetail.map((dayDetail, index) => {
-            return (
-              <DetailViewCard
-                key={index + 1}
-                id={index + 1}
-                isMainCard={false}
-                city={"no city name"} //display city and country names in only main card
-                country={"no contry name"}
-                temp={dayDetail.temp}
-                feelTemp={dayDetail.feels_like}
-                humidity={dayDetail.humidity}
-                img={dayDetail.weather[0].icon}
-                description={dayDetail.weather[0].description}
-                day={currentDayData.day + index + 1}
-              />
-            );
+      {showWeekData
+        ? weekData.map((dayData, index) => {
+            if (new Date(dayData.dt_txt).getHours() === 15) {
+              return (
+                <DetailViewCard
+                  id={index}
+                  key={index}
+                  isMainCard={false}
+                  temp={dayData.main.temp}
+                  feelTemp={dayData.main.feels_like}
+                  city={currentDayData.city}
+                  country={currentDayData.country}
+                  day={new Date(dayData.dt_txt).getDay()}
+                  humidity={dayData.main.humidity}
+                  img={dayData.weather[0].icon}
+                  description={dayData.weather[0].description.toUpperCase()}
+                />
+              );
+            }
           })
         : null}
     </div>

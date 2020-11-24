@@ -13,22 +13,22 @@ function DetailViewCard(props) {
 
   const getDayString = (number) => {
     const dayStrings = [
+      "Sunday",
       "Monday",
       "Tuesday",
       "Wednesday",
       "Thursday",
       "Friday",
       "Saturday",
-      "Sunday",
     ];
 
     if (number >= 7) {
       while (number > 7) {
         number -= 7;
       }
-      return dayStrings[number - 1];
+      return dayStrings[number];
     } else {
-      return dayStrings[number - 1];
+      return dayStrings[number];
     }
   };
 
@@ -37,11 +37,11 @@ function DetailViewCard(props) {
   const handleChangeUnit = () => {
     units === "F" ? setUnits("C") : setUnits("F");
   };
-  const [tempVal, setTempval] = useState(props.temp);
-  const [feelTempVal, setFeelTempVal] = useState(props.feelTemp);
+  const [tempVal, setTempval] = useState(Math.round(props.temp));
+  const [feelTempVal, setFeelTempVal] = useState(Math.round(props.feelTemp));
 
   const convertToCel = (fahrenheit) => {
-    return ((fahrenheit - 32) * (5 / 9)).toFixed(2);
+    return Math.round((fahrenheit - 32) * (5 / 9));
   };
 
   useEffect(() => {
@@ -49,8 +49,8 @@ function DetailViewCard(props) {
       setTempval(convertToCel(props.temp));
       setFeelTempVal(convertToCel(props.feelTemp));
     } else {
-      setTempval(props.temp);
-      setFeelTempVal(props.feelTemp);
+      setTempval(Math.round(props.temp));
+      setFeelTempVal(Math.round(props.feelTemp));
     }
   }, [units]);
   //Handle change unit
@@ -64,15 +64,36 @@ function DetailViewCard(props) {
               <h4 className="city-title">
                 {props.city}, {props.country}
               </h4>
-            ) : null}
-            <h4>{getDayString(props.day)}</h4>
+            ) : (
+              <h1></h1>
+            )}
+            <div className="day-close-btn-box">
+              <h4 style={{ marginRight: "5px" }}>{getDayString(props.day)}</h4>
+              {!props.isMainCard ? (
+                <Button
+                  variant="outline-danger"
+                  onClick={() => {
+                    if (!props.isMainCard) {
+                      setShowFullDetail(false);
+                    }
+                  }}
+                >
+                  close
+                </Button>
+              ) : null}
+            </div>
           </div>
 
           <div className="weather-detail-container">
             <div className="deatil-data-container">
               <h3 className="temp-value">
                 Temp: {tempVal}
-                <i onClick={() => handleChangeUnit()}>{units}</i>
+                <Button
+                  variant="outline-info"
+                  onClick={() => handleChangeUnit()}
+                >
+                  {units}
+                </Button>
               </h3>
               <h5 className="feel-temp-val">Feels like: {feelTempVal}</h5>
               <h6 className="humity-val">Humity: {props.humidity}</h6>

@@ -74,7 +74,6 @@ function SearchPage() {
   }, [savedPlaces]);
 
   const HandleSavePlace = (id) => {
-    console.log(localStorage.getItem("savedPlaces"));
     setSavedPlaces((previousPlaces) => {
       return [...previousPlaces, id];
     });

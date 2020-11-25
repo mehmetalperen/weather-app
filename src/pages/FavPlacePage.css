@@ -1,2 +1,7 @@
 .FavPlacePage {
+  display: flex;
+  margin: 50px 10% 0;
+  justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
 }

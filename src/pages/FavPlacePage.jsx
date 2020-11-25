@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import "./FavPlacePage.css";
+import PreviewCard from "../components/PreviewCard";
 function FavPlacePage() {
   const [savedPlaces, setSavedPlaces] = useState([]);
 
   async function fetchItems() {
-    console.log(savedPlaceIDs[savedPlaceCount]);
     const data = await fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?id=2950159&appid=c44bebe63065c02792900a2e3f561b37`
+      `http://api.openweathermap.org/data/2.5/forecast?id=${savedPlaceIDs[savedPlaceCount]}&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const itemData = await data.json();
-    // console.log(itemData);
-    // tempSavedPlaceDetailArr.push(itemData);
+    tempSavedPlaceDetailArr.push(itemData);
 
     if (
       tempSavedPlaceDetailArr.length === savedPlaceIDs.length &&
@@ -22,7 +21,6 @@ function FavPlacePage() {
 
   //Get saved places IDs
   const savedPlaceIDs = JSON.parse(localStorage.getItem("savedPlaces"));
-
   //Getting saved places details
   let tempSavedPlaceDetailArr = [];
   let savedPlaceCount = savedPlaceIDs.length - 1;
@@ -30,9 +28,35 @@ function FavPlacePage() {
     fetchItems();
     savedPlaceCount--;
   }
+
+  //handle unsaving
+  const handleUnsaving = (id) => {
+    const updatedSavedPlacesIDs = savedPlaceIDs.filter((ID) => ID !== id);
+    setSavedPlaces((allSavedPlaces) => {
+      return allSavedPlaces.filter((place) => {
+        if (place.city.id !== id) {
+          return place;
+        }
+      });
+    });
+    localStorage.setItem("savedPlaces", JSON.stringify(updatedSavedPlacesIDs));
+  };
   return (
     <div className="FavPlacePage">
-      <h1>FavPlacePage</h1>
+      {savedPlaces.map((place) => {
+        console.log(place);
+        return (
+          <PreviewCard
+            key={place.city.id}
+            id={place.city.id}
+            name={place.city.name}
+            country={place.city.country}
+            isSaved={true}
+            onUnsave={handleUnsaving}
+            onSave={null}
+          />
+        );
+      })}
     </div>
   );
 }

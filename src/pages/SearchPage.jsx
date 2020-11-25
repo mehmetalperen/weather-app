@@ -71,6 +71,7 @@ function SearchPage() {
 
   useEffect(() => {
     localStorage.setItem("savedPlaces", JSON.stringify(savedPlaces));
+    console.log(localStorage.getItem("savedPlaces"));
   }, [savedPlaces]);
 
   const HandleSavePlace = (id) => {

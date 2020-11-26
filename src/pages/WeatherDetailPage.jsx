@@ -27,6 +27,7 @@ function WeatherDetailPage({ match }) {
     );
     const dayItem = await dayData.json();
     setCurrentDayData({
+      id: match.params.id,
       city: dayItem.name,
       country: dayItem.sys.country,
       temp: dayItem.main.temp,
@@ -59,8 +60,8 @@ function WeatherDetailPage({ match }) {
       >
         {showCurrentDayData ? (
           <DetailViewCard
-            id={0}
-            key={0}
+            id={currentDayData.id}
+            key={currentDayData.id}
             isMainCard={true}
             temp={currentDayData.temp}
             feelTemp={currentDayData.feelTemp}

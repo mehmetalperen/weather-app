@@ -34,9 +34,7 @@ function FavPlacePage() {
     const updatedSavedPlacesIDs = savedPlaceIDs.filter((ID) => ID !== id);
     setSavedPlaces((allSavedPlaces) => {
       return allSavedPlaces.filter((place) => {
-        if (place.city.id !== id) {
-          return place;
-        }
+        return place.city.id !== id;
       });
     });
     localStorage.setItem("savedPlaces", JSON.stringify(updatedSavedPlacesIDs));
@@ -54,6 +52,7 @@ function FavPlacePage() {
             isSaved={true}
             onUnsave={handleUnsaving}
             onSave={null}
+            isMainCard={true}
           />
         );
       })}

@@ -6,7 +6,7 @@ function FavPlacePage() {
 
   async function fetchItems() {
     const data = await fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?id=${savedPlaceIDs[savedPlaceCount]}&appid=c44bebe63065c02792900a2e3f561b37`
+      `https://api.openweathermap.org/data/2.5/forecast?id=${savedPlaceIDs[savedPlaceCount]}&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const itemData = await data.json();
     tempSavedPlaceDetailArr.push(itemData);

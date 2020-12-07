@@ -23,7 +23,7 @@ function WeatherDetailPage({ match }) {
 
   async function fetchCurrentDayData() {
     const dayData = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
+      `https://api.openweathermap.org/data/2.5/weather?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const dayItem = await dayData.json();
     setCurrentDayData({
@@ -42,7 +42,7 @@ function WeatherDetailPage({ match }) {
 
   async function fetchWeekData() {
     const weekData = await fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
+      `https://api.openweathermap.org/data/2.5/forecast?id=${match.params.id}&units=imperial&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const weekItem = await weekData.json();
     setWeekData(weekItem.list);

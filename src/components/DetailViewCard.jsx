@@ -101,7 +101,7 @@ function DetailViewCard(props) {
 
             <div className="weather-visual-detail-container">
               <img
-                src={`http://openweathermap.org/img/wn/${props.img}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${props.img}@2x.png`}
                 alt="icon"
               />
               <h6 className="img-description">{props.description}</h6>
@@ -117,7 +117,7 @@ function DetailViewCard(props) {
         >
           <h1 className="day">{getDayString(props.day)}</h1>
           <img
-            src={`http://openweathermap.org/img/wn/${props.img}@2x.png`}
+            src={`https://openweathermap.org/img/wn/${props.img}@2x.png`}
             alt="icon"
           />
         </div>

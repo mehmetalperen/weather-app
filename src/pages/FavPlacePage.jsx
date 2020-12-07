@@ -52,7 +52,6 @@ function FavPlacePage() {
             isSaved={true}
             onUnsave={handleUnsaving}
             onSave={null}
-            isMainCard={true}
           />
         );
       })}

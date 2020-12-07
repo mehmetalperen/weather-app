@@ -43,7 +43,7 @@ function SearchPage() {
   //api.openweathermap.org/data/2.5/weather?q=${city name, state code}&appid=c44bebe63065c02792900a2e3f561b37
   async function fetchData() {
     const data = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=c44bebe63065c02792900a2e3f561b37`
+      `https://api.openweathermap.org/data/2.5/weather?q=${userInput}&appid=c44bebe63065c02792900a2e3f561b37`
     );
     const itemsData = await data.json();
     if (itemsData.cod !== "404") {

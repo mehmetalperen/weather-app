@@ -64,11 +64,9 @@ function DetailViewCard(props) {
               <h4 className="city-title">
                 {props.city}, {props.country}
               </h4>
-            ) : (
-              <h1></h1>
-            )}
+            ) : null}
             <div className="day-close-btn-box">
-              <h4 style={{ marginRight: "5px" }}>{getDayString(props.day)}</h4>
+              <h4>{getDayString(props.day)}</h4>
               {!props.isMainCard ? (
                 <Button
                   variant="outline-danger"
@@ -85,7 +83,7 @@ function DetailViewCard(props) {
           </div>
 
           <div className="weather-detail-container">
-            <div className="deatil-data-container">
+            <div className="detail-data-container">
               <h3 className="temp-value">
                 Temp: {tempVal}
                 <Button

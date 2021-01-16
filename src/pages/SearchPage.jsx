@@ -106,7 +106,8 @@ function SearchPage() {
           <InputGroup className="mb-3">
             <FormControl
               aria-describedby="basic-addon1"
-              placeholder="Type name of the city you want to find"
+              placeholder="City Search"
+              containerClass="active-pink active-pink-2 mt-0 mb-3"
               value={userInput}
               onChange={handleTyping}
             />
